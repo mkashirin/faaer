@@ -1,0 +1,11 @@
+odin run src -- \
+  -audio-path:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want.mp3 \
+  -playback-speed:0.75 \
+  -reverb \
+  -eq:muffled \
+  -start-ms:7600 \
+  -end-ms:22750 \
+  -fade-in-ms:4000 \
+  -fade-out-ms:2000 \
+  -loop:10 \
+  -save:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).mp3
