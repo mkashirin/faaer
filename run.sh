@@ -3,9 +3,9 @@ odin run src -- \
   -playback-speed:0.75 \
   -reverb \
   -eq:muffled \
-  -start-ms:7600 \
-  -end-ms:22750 \
-  -fade-in-ms:4000 \
-  -fade-out-ms:2000 \
-  -loop:10 \
+  -start-ms:9600 \
+  -end-ms:23750 \
+  -fade-in-ms:2000 \
+  -fade-out-ms:4000 \
+  -loop:2 \
   -save:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).mp3
