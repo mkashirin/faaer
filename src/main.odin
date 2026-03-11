@@ -75,7 +75,7 @@ parse_config :: proc() -> (Config, bool) {
     config: Config
     config.playback_speed = 1.0
     config.loop = 1
-    flags.parse(&config, os.args[1:], .Odin)
+    flags.parse(&config, os.args[1:])
     if config.audio_path == "" {
         fmt.eprintln("Error: `-audio-path` is required")
         return config, false
@@ -283,15 +283,14 @@ execute_audio_graph :: proc(
             native_sr,
             config,
         )
-    } else {
-        return play_audio_to_device(
-            &graph,
-            len(final_buffer),
-            channels,
-            native_sr,
-            config,
-        )
     }
+    return play_audio_to_device(
+        &graph,
+        len(final_buffer),
+        channels,
+        native_sr,
+        config,
+    )
 }
 
 save_audio_to_file :: proc(
@@ -301,15 +300,13 @@ save_audio_to_file :: proc(
     config: Config,
 ) -> bool {
     fmt.printfln("Rendering audio offline and saving to: %s", config.save)
-    save_path_c := strings.clone_to_cstring(config.save)
-    defer delete(save_path_c)
+    save_path := strings.clone_to_cstring(config.save)
+    defer delete(save_path)
 
     enc_config := ma.encoder_config_init(.mp3, .f32, channels, native_sr)
     enc: ma.encoder
-    if ma.encoder_init_file(save_path_c, &enc_config, &enc) != .SUCCESS {
-        fmt.eprintln(
-            "Error: Failed to initialize encoder. Check if destination exists",
-        )
+    if ma.encoder_init_file(save_path, &enc_config, &enc) != .SUCCESS {
+        fmt.eprintln("Error: Failed to initialize encoder")
         return false
     }
     defer ma.encoder_uninit(&enc)
@@ -317,7 +314,7 @@ save_audio_to_file :: proc(
     read_buf := make([]f32, 4096 * channels)
     defer delete(read_buf)
 
-    tail_frames := config.reverb ? native_sr * 2 : 0
+    tail_frames := native_sr * 2 if config.reverb else 0
     total_to_read :=
         (u64(final_buffer_len) / u64(channels)) + u64(tail_frames)
 
@@ -349,7 +346,7 @@ play_audio_to_device :: proc(
 ) -> bool {
     fmt.println("Playing audio... (Ctrl+C to quit)")
     dev_config := ma.device_config_init(ma.device_type.playback)
-    dev_config.playback.format = ma.format.f32
+    dev_config.playback.format = .f32
     dev_config.playback.channels = channels
     dev_config.sampleRate = native_sr
     dev_config.dataCallback = data_callback
@@ -366,7 +363,7 @@ play_audio_to_device :: proc(
         fmt.eprintln("Error: Failed to start playback device")
         return false
     }
-    tail_ms := config.reverb ? u64(2000) : 0
+    tail_ms := u64(2000) if config.reverb else 0
     duration_ms :=
         ((u64(final_buffer_len) / u64(channels)) * 1000) / u64(native_sr)
 
