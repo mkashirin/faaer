@@ -1,11 +1,13 @@
+#!/bin/bash
+
 odin run src -- \
-  -audio-path:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want.mp3 \
-  -playback-speed:0.75 \
+  -audio-path:./audio/Alan_Fitzpatrick_-_We_Do_What_We_Want.mp3 \
+  -playback-speed:0.70 \
   -reverb \
-  -eq:muffled \
-  -start-ms:9600 \
-  -end-ms:23750 \
+  -eq-preset:Muffled \
+  -start-ms:10750 \
+  -end-ms:32650 \
   -fade-in-ms:2000 \
-  -fade-out-ms:4000 \
-  -loop:2 \
-  -save:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).mp3
+  -fade-out-ms:2000 \
+  -loop:2
+  # -save-path:./audio/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).wav

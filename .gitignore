@@ -1,5 +1,7 @@
+# Executables
 faaer
+*.bin
 
+# Audio files
 *.wav
-*.flac
 *.mp3
