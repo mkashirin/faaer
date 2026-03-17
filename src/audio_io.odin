@@ -1,6 +1,5 @@
 package main
 
-import "core:fmt"
 import "core:strings"
 import "core:time"
 import ma "vendor:miniaudio"
@@ -56,7 +55,6 @@ save_audio :: proc(
     total_read: u64 = 0
     for total_read < total_frames {
         left := min(4096, total_frames - total_read)
-        fmt.printfln("Hit breakpoint: %v", left)
         frames_read: u64
         if ma.node_graph_read_pcm_frames(ng, raw_data(buf), left, &frames_read) != MA_OK {
             return .Node_Graph_Failed

@@ -15,7 +15,7 @@ run :: proc() -> (result: Result) {
     defer free_all()
 
     opt: CLI_Opts
-    parse_cli_opts(&opt) or_return
+    parse_opts(&opt) or_return
 
     ad: Audio_Data
     load_audio(opt, &ad) or_return
@@ -38,14 +38,20 @@ run :: proc() -> (result: Result) {
     return
 }
 
-parse_cli_opts :: proc(opt: ^CLI_Opts) -> (result: CLI_Result) {
+parse_opts :: proc(opt: ^CLI_Opts) -> (result: CLI_Result) {
     opt.playback_speed = 1.0
     opt.loop = 1
     flags.parse(opt, os.args[1:])
-    if opt.audio_path == "" { return .File_Not_Found }
-    if opt.playback_speed <= 0 { opt.playback_speed = 1.0 }
-    if opt.loop < 1 { opt.loop = 1 }
 
+    if opt.audio_path == "" { return .File_Not_Found }
+    if opt.playback_speed <= 0 { return .Negative_Playback_Speed }
+
+    if opt.eq_preset == .Invalid { return .Invalid_EQ_Preset }
+    trim_ms := opt.end_ms - opt.start_ms
+    if trim_ms < 1 { return .Negative_Duration }
+    if opt.fade_in_ms + opt.fade_out_ms > trim_ms { return .Fading_Longer_Than_Duraion }
+
+    if opt.loop < 1 { return .Negative_Loop }
     fmt.printfln("Parsed: %#v", opt)
     return
 }
@@ -71,5 +77,12 @@ CLI_Opts :: struct {
 Result :: union { CLI_Result, Effects_Result, Audio_IO_Result }
 
 CLI_Result :: Maybe(CLI_Error)
-CLI_Error :: enum { File_Not_Found = 1 }
+CLI_Error :: enum {
+    File_Not_Found = 1,
+    Negative_Playback_Speed,
+    Invalid_EQ_Preset,
+    Negative_Duration,
+    Fading_Longer_Than_Duraion,
+    Negative_Loop,
+}
 

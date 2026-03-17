@@ -46,7 +46,7 @@ attach_eq_to_dsn :: proc(
     channels, sr: u32,
 ) -> (result: Effects_Result) {
     loshelf_gain, hishelf_gain: f64
-    switch eq_preset {
+    #partial switch eq_preset {
         case .None:
         case .Bass_Boost:   loshelf_gain = 12
         case .Treble_Boost: hishelf_gain = 12
@@ -103,7 +103,7 @@ finalize_node_graph :: proc(
     return
 }
 
-EQ_Preset :: enum { None, Bass_Boost, Treble_Boost, Muffled }
+EQ_Preset :: enum { Invalid, None, Bass_Boost, Treble_Boost, Muffled }
 
 Graph_Nodes :: struct {
     audio_buffer:     ma.audio_buffer,
