@@ -4,7 +4,7 @@ import "core:strings"
 import "core:time"
 import ma "vendor:miniaudio"
 
-load_audio :: proc(opt: CLI_Opts, ad: ^Audio_Data) -> (result: Audio_IO_Result) {
+decoder_load_file :: proc(opt: CLI_Opts, ad: ^Audio_Data) -> (result: Audio_IO_Result) {
     audio_path := strings.clone_to_cstring(opt.audio_path)
     defer delete(audio_path)
 
@@ -33,7 +33,7 @@ load_audio :: proc(opt: CLI_Opts, ad: ^Audio_Data) -> (result: Audio_IO_Result) 
     return
 }
 
-save_audio :: proc(
+encoder_save_file :: proc(
     ng: ^ma.node_graph,
     buf_len: int,
     channels, sr: u32,
@@ -69,7 +69,7 @@ save_audio :: proc(
     return
 }
 
-play_to_device :: proc(
+device_start_playback :: proc(
     ng: ^ma.node_graph,
     buf_len: int,
     channels, sr: u32,

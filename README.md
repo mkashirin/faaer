@@ -1,7 +1,7 @@
 # Faaer
 
 Faaer (Fast Audio Effects Processor) is a very small and limited AEP. It is built to produce the
-*"slowed + reverb"* versions of a songs (or their specific parts) and music in general. Executable
+slowed + reverb versions of a songs (or their specific parts) and music in general. Executable
 takes audio file as input, then it can either save processed audio to a specified path, or start a
 playback of it.
 

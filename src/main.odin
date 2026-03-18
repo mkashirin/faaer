@@ -12,29 +12,29 @@ main :: proc() {
 }
 
 run :: proc() -> (result: Result) {
-    defer free_all()
-
     opt: CLI_Opts
     parse_opts(&opt) or_return
 
     ad: Audio_Data
-    load_audio(opt, &ad) or_return
+    decoder_load_file(opt, &ad) or_return
     buf := carve_audio(&ad, opt)
+    defer delete(buf)
 
     ng: ma.node_graph
-    defer ma.node_graph_uninit(&ng, nil)
     ng_config := ma.node_graph_config_init(ad.channels)
     nodes: Graph_Nodes
-    build_node_graph(&ng, &ng_config, &nodes, buf, ad.channels, ad.sample_rate, opt)
+    node_graph_build(&ng, &ng_config, &nodes, buf, ad.channels, ad.sample_rate, opt)
+    defer ma.node_graph_uninit(&ng, nil) // *uninit should never fail
+
     if opt.save_path != "" {
         fmt.printfln("Encoding processed audio to: %s in WAV format...", opt.save_path)
         defer fmt.printfln("Finished encoding")
-        save_audio(&ng, len(buf), ad.channels, ad.sample_rate, opt) or_return
+        encoder_save_file(&ng, len(buf), ad.channels, ad.sample_rate, opt) or_return
         return
     }
     fmt.println("Playing processed audio... (Press Control-C to stop)")
     defer fmt.printfln("Finished audio playback")
-    play_to_device(&ng, len(buf), ad.channels, ad.sample_rate, opt) or_return
+    device_start_playback(&ng, len(buf), ad.channels, ad.sample_rate, opt) or_return
     return
 }
 

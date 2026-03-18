@@ -9,5 +9,5 @@ odin run src -- \
   -end-ms:32650 \
   -fade-in-ms:2000 \
   -fade-out-ms:2000 \
-  -loop:4
-  # -save-path:./audio/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).wav
+  -loop:4 \
+  -save-path:./audio/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).wav

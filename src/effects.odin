@@ -2,7 +2,7 @@ package main
 
 import ma "vendor:miniaudio"
 
-build_node_graph :: proc(
+node_graph_build :: proc(
     ng: ^ma.node_graph,
     ng_config: ^ma.node_graph_config,
     nodes: ^Graph_Nodes,
@@ -26,7 +26,7 @@ build_node_graph :: proc(
         return .No_DSN_Init
     }
 
-    attach_eq_to_dsn(
+    dsn_attach_eq(
         opt.eq_preset,
         ng,
         &nodes.data_source_node,
@@ -34,11 +34,11 @@ build_node_graph :: proc(
         channels,
         sr,
     ) or_return
-    finalize_node_graph(ng, &nodes.effects, channels, sr, opt.reverb) or_return
+    node_graph_finalize(ng, &nodes.effects, channels, sr, opt.reverb) or_return
     return
 }
 
-attach_eq_to_dsn :: proc(
+dsn_attach_eq :: proc(
     eq_preset: EQ_Preset,
     ng: ^ma.node_graph,
     ds_node: ^ma.data_source_node,
@@ -74,7 +74,7 @@ attach_eq_to_dsn :: proc(
     return
 }
 
-finalize_node_graph :: proc(
+node_graph_finalize :: proc(
     ng: ^ma.node_graph,
     fx: ^Effects,
     channels, sr: u32,
