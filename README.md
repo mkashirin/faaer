@@ -1,23 +1,34 @@
 # Faaer (Fast Audio Effects Processor)
 
-To build:
+Faaer is a very small and limited AEP. It is built to produce the *"slowed + reverb"* versions of a
+songs (or their specific parts) and music in general. Executable takes audio file as input, then it
+can either save processed audio to a specified path, or start a playback of it.
+
+The following options are available for configuration:
+* `-audio-path` — path to the input audio file,
+* `-reverb` — whether to apply reverb effect or not (flag),
+* `-eq-preset` — equalizeer preset (`None`, `Bass_Boost`, `Treble_Boost`, `Muffled`),
+* `-start-ms` — where to seek in the output audio, to set the start of a trimmed region,
+* `-end-ms` — where to seek in the output audio, to set the end of a trimmed region,
+* `-fade-in-ms` — how long would volume fade in,
+* `-fade-out-ms` — how long would volume fade out,
+* `-loop` — how many times the trimmed region should be replayed (with volume fading applied),
+* `-save-path` — where the output audio file should be saved.
+
+## Building and Running
+
+To build an executable:
 ```
-odin build src -o:size -out:faaer
+./build.sh
 ```
 
 To run (example):
 ```
-odin run src -- \
-  -audio-path:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want.mp3 \
-  -playback-speed:0.75 \
-  -reverb \
-  -eq:muffled \
-  -start-ms:9600 \
-  -end-ms:23750 \
-  -fade-in-ms:2000 \
-  -fade-out-ms:4000 \
-  -loop:2 \
-  -save:./audios/Alan_Fitzpatrick_-_We_Do_What_We_Want_\(Slowed\).mp3
+./run.sh
 ```
 
-Built with Miniaudio.
+On Windows, use external Bash executable to run these scripts.
+
+## Licensing
+
+This software is distributed under MIT License.
