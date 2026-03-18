@@ -1,8 +1,9 @@
-# Faaer (Fast Audio Effects Processor)
+# Faaer
 
-Faaer is a very small and limited AEP. It is built to produce the *"slowed + reverb"* versions of a
-songs (or their specific parts) and music in general. Executable takes audio file as input, then it
-can either save processed audio to a specified path, or start a playback of it.
+Faaer (Fast Audio Effects Processor) is a very small and limited AEP. It is built to produce the
+*"slowed + reverb"* versions of a songs (or their specific parts) and music in general. Executable
+takes audio file as input, then it can either save processed audio to a specified path, or start a
+playback of it.
 
 The following options are available for configuration:
 * `-audio-path` — path to the input audio file,
@@ -14,6 +15,9 @@ The following options are available for configuration:
 * `-fade-out-ms` — how long would volume fade out,
 * `-loop` — how many times the trimmed region should be replayed (with volume fading applied),
 * `-save-path` — where the output audio file should be saved.
+
+Source code does not have any external dependencies, just the Odin compiler. Odin vendores
+Miniaudio library, which enables all the necessary audio processing capabilities.
 
 ## Building and Running
 
