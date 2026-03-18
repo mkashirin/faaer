@@ -5,3 +5,6 @@ src.bin
 # Audio files
 *.wav
 *.mp3
+
+# Dumb FS artifact from macOS
+.DS_Store

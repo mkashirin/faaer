@@ -40,15 +40,12 @@ decoder_read_pcm_frames_to_buffer :: proc(
     buf: ^[dynamic]f32,
     channels: u32,
 ) -> ma.result {
-    result: ma.result
     chunk := make([]f32, 4096 * channels)
     defer delete(chunk)
     for {
         framesRead: u64
-        result = ma.decoder_read_pcm_frames(decoder, raw_data(chunk), 4096, &framesRead)
-        if framesRead > 0 {
-            append(buf, ..chunk[:framesRead * u64(channels)])
-        }
+        result := ma.decoder_read_pcm_frames(decoder, raw_data(chunk), 4096, &framesRead)
+        if framesRead > 0 { append(buf, ..chunk[:framesRead * u64(channels)]) }
         if result == .AT_END { break } else if result != .SUCCESS { return result }
     }
     return .SUCCESS
