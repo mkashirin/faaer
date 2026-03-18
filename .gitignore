@@ -1,6 +1,6 @@
 # Executables
-faaer
-*.bin
+bin/
+src.bin
 
 # Audio files
 *.wav

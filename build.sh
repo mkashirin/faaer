@@ -1,3 +1,3 @@
 #!/bin/bash
 
-odin build src -o:size -out:faaer
+odin build src -o:speed -out:faaer
